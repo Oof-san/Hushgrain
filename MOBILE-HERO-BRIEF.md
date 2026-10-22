@@ -1,0 +1,5 @@
+# Mobile hero companion
+
+Generated with the built-in imagegen tool. Final asset: `client/public/images/hero-mobile.webp`.
+
+Use case: photorealistic-natural. Asset type: portrait full-screen mobile hero photograph for Hushgrain independent café. Portrait 2:3 composition. A cinematic editorial breakfast still life on a dark walnut café table: beautiful ivory ceramic flat white cup with intricate leaf latte art and saucer occupying the LOWER RIGHT QUARTER, a golden flaky croissant on an ivory plate near the LOWER LEFT edge, soft oat linen at the bottom. Upper 55 percent of the image is beautiful dark brown walnut table in deep shadow, deliberately unobstructed negative space for cream website headline added later. Sunlight falls diagonally across the coffee and pastry in the lower half only. Sophisticated warm Kinfolk editorial photography, tactile natural materials, subtle film grain, realistic food. View from overhead at a gentle angle. Extremely important: keep the upper half dark and clear, no cups, flowers or objects in the upper half. No text, logos, graphics or watermark.
