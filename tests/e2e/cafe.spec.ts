@@ -19,6 +19,29 @@ async function ready(page: Page) {
     );
   });
 }
+test('portfolio orders work when every server function is unavailable', async ({ page }) => {
+  const apiRequests: string[] = [];
+  await page.route('**/api/**', async (route) => {
+    apiRequests.push(route.request().url());
+    await route.fulfill({
+      status: 500,
+      contentType: 'text/plain',
+      body: 'FUNCTION_INVOCATION_FAILED',
+    });
+  });
+  await page.goto('/menu');
+  await ready(page);
+  await page.getByRole('button', { name: 'Add House Flat White to tray', exact: true }).click();
+  await page.goto('/checkout');
+  await page.getByLabel('Your name', { exact: true }).fill('Alex Demo');
+  await page.getByLabel('Phone number', { exact: true }).fill('09000000000');
+  await page.getByRole('button', { name: 'Place demo order · ₱180' }).click();
+  await expect(page).toHaveURL(/confirmation\/HG-/);
+  await expect(page.locator('.order-card')).toContainText('₱180');
+  await page.goto('/owner');
+  await expect(page.locator('.board-order').filter({ hasText: 'Alex Demo' })).toHaveCount(1);
+  expect(apiRequests).toEqual([]);
+});
 test('menu category, search, vegan filter, item details, and keyboard dismiss', async ({
   page,
 }) => {

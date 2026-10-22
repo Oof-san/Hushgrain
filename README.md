@@ -84,7 +84,7 @@ The tests cover the two checkout paths, persistence, tracking, owner operations,
 | `server/db.ts`              | SQLite/Turso persistence and transactional operations               |
 | `server/auth.ts`            | Independent owner authentication                                    |
 | `server/app.ts`             | Express API, authorization, origin checks, and rate limits          |
-| `api/index.ts`              | Vercel function entry point                                         |
+| `api/index.js`              | Vercel function entry point                                         |
 | `client/public/images`      | All 17 optimized, locally served photographs                        |
 
 Catalog IDs are derived from the seed order. Preserve existing seed positions once a live database exists; append new items or use an explicit data migration rather than reordering seeds. SQLite stores catalog and order snapshots as JSON within indexed tables. The previous MySQL schema is not compatible; this is a fresh installation, not an automatic migration of existing customer records.
@@ -93,8 +93,10 @@ All fonts are served locally through Fontsource packages. All artwork is generat
 
 ## GitHub and Vercel
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for the prepared deployment settings. This folder is the repository root. No repository has been created and no deployment has been published as part of the local overhaul.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the prepared deployment settings. This folder is the repository root. The repository is Oof-san/Hushgrain and the deployed domain is hushgrain.vercel.app.
 
 ## Stack
 
 React 19, Vite 8, TypeScript 7, Express 5, TanStack Query, Zod, libSQL/Turso, jose, Lucide, Vitest, Playwright, and axe-core. Exact verified versions are in `package-lock.json`.
+
+The portfolio build embeds demo mode and does not call the server API. DATA_MODE=live must be set before building and running a live installation. Run npm run test:deployment after npm run build to verify the bundled Vercel function entry.

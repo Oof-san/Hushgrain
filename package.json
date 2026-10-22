@@ -1,6 +1,6 @@
 {
   "name": "hushgrain",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "type": "module",
   "description": "An independent café storefront and ordering experience.",
@@ -10,12 +10,13 @@
   },
   "scripts": {
     "dev": "tsx server/dev.ts",
-    "build": "tsc --noEmit && vite build && esbuild server/start.ts --bundle --platform=node --packages=external --format=esm --outfile=dist/server.js",
+    "build": "tsc --noEmit && vite build && node scripts/build-server.mjs",
     "start": "node dist/server.js",
     "preview": "vite preview --host 127.0.0.1",
     "check": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:deployment": "node scripts/verify-deployment.mjs",
     "password:hash": "node scripts/hash-password.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

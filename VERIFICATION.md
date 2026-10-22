@@ -2,6 +2,16 @@
 
 Verified locally on 22 October 2026 with Node.js 24.19.0.
 
+## Vercel startup fix — 2.0.1
+
+The deployed `/api/config`, `/api/index`, and `/api/storefront` returned HTTP 500 `FUNCTION_INVOCATION_FAILED`. The demo frontend previously depended on the configuration endpoint, so that server crash prevented the storefront from rendering.
+
+The demo build now embeds its mode and makes no API requests. The optional Vercel API uses a plain JavaScript entry pointing at the bundled Node 24 output; remote deployments load the web database driver rather than eagerly loading native SQLite. A live build still requires its live API and never silently becomes a sandbox.
+
+Verification after this fix: 14 unit/API/database tests passed; the built Vercel entry booted in plain Node with the Vercel environment enabled; and three targeted browser scenarios passed, including complete demo checkout with all API routes blocked, pickup/status progression, and dine-in checkout. Strict TypeScript and formatting checks passed. Hosted behavior must be rechecked after the new commit deploys.
+
+## Original overhaul verification
+
 - TypeScript strict checking, including unused variables and parameters: passed.
 - Production frontend and Node server build: passed.
 - Built-server smoke checks: home, menu, tracking, owner, runtime configuration, and both hero images returned HTTP 200 with the expected content types.

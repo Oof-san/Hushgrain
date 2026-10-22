@@ -1,4 +1,4 @@
-import { createClient, type Client } from '@libsql/client';
+import { createClient as createRemoteClient, type Client } from '@libsql/client/web';
 import { mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomBytes } from 'node:crypto';
@@ -156,6 +156,10 @@ export function getDatabase() {
       throw new Error('Live ordering on Vercel requires a remote database.');
     if (url.startsWith('file:') && url !== 'file::memory:')
       await mkdir(dirname(url.slice(5)), { recursive: true });
+    // Remote/serverless deployments never load the native SQLite driver on startup.
+    const createClient = url.startsWith('file:')
+      ? (await import('@libsql/client')).createClient
+      : createRemoteClient;
     return new CafeDatabase(createClient({ url, authToken: process.env.DATABASE_AUTH_TOKEN }));
   })().catch((error) => {
     database = undefined;

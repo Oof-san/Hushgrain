@@ -1,5 +1,6 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { CAFE_DEFAULTS, CATEGORIES, INITIAL_MENU } from '../../shared/catalog';
+import { resolveConfig, type CafeConfig } from '../../shared/runtime';
 import {
   menuChangesSchema,
   priceOrder,
@@ -22,7 +23,7 @@ export const queryClient = new QueryClient({
     mutations: { retry: false },
   },
 });
-export type Config = { mode: 'demo' | 'live'; ownerConfigured: boolean };
+export type Config = CafeConfig;
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
@@ -37,7 +38,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
 export function useConfig() {
   return useQuery({
     queryKey: ['config'],
-    queryFn: () => request<Config>('/api/config'),
+    queryFn: () => resolveConfig(__CAFE_MODE__, () => request<Config>('/api/config')),
     staleTime: Infinity,
   });
 }

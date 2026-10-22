@@ -1,6 +1,6 @@
 # GitHub and Vercel handoff
 
-This project is prepared for deployment. It has not been uploaded or deployed yet.
+Repository: [Oof-san/Hushgrain](https://github.com/Oof-san/Hushgrain). Production domain: [hushgrain.vercel.app](https://hushgrain.vercel.app).
 
 ## Repository
 
@@ -21,9 +21,9 @@ Import the repository into Vercel with:
 | Build command    | `npm run build` |
 | Output directory | `dist/public`   |
 
-The checked-in `vercel.json` supplies the build/output settings, API rewrites, SPA routing, asset caching, and security headers. `api/index.ts` exports the Express application as a Node function; it does not start a persistent listener. The separate `server/start.ts` is for ordinary Node hosting and local production previews.
+The checked-in `vercel.json` supplies the build/output settings, API rewrites, SPA routing, asset caching, and security headers. The build bundles the Express API into `dist/api.js`. The plain JavaScript entry `api/index.js` exports that bundle as a Node function; it does not start a persistent listener. Project TypeScript imports are resolved before Vercel executes the bundle. The separate `server/start.ts` is for ordinary Node hosting and local production previews.
 
-Leave `DATA_MODE` unset or set it to `demo`. The public portfolio requires no database or owner credentials. Demo editing privileges are confined to the visitor’s own browser storage.
+Leave `DATA_MODE` unset or set it to `demo`. The public portfolio makes no API requests and requires no database or owner credentials. Its ordering experience stays available on static hosting or during a function outage. Demo editing privileges are confined to the visitor’s own browser storage.
 
 ## Live café deployment
 
@@ -53,3 +53,7 @@ Check the home page and all 17 image URLs, reload `/menu`, `/track`, and `/owner
 The local build, SQL adapter, and API are tested. Remote credentials, Vercel routing, and the deployed domain must still be verified on the actual hosted deployment.
 
 Official references used when preparing this configuration: [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite), [Vercel Node.js versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), and [Turso TypeScript SDK](https://docs.turso.tech/sdk/ts/quickstart).
+
+## Build mode and API verification
+
+DATA_MODE is both a build-time and runtime setting. Rebuild and redeploy after changing it. A live build deliberately refuses to fall back to demo mode. After building, run npm run test:deployment to exercise the exact bundled Vercel entry in plain Node.
